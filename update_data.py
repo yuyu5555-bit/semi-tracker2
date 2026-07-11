@@ -777,6 +777,17 @@ def main():
         print(f"headlines skip: {_e}")
         _headlines = []
 
+    try:
+        import site_content as _sc
+        _content = {
+            "weekly": _sc.WEEKLY, "events": _sc.EVENTS,
+            "news": _sc.NEWS, "macro": _sc.MACRO,
+        }
+        print("content: site_content.py 反映")
+    except Exception as _e:
+        print(f"content skip: {_e}")
+        _content = {}
+
     out = {
         "updated": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "failed": failed, "macro": MACRO, "quotes": quotes,
@@ -784,6 +795,7 @@ def main():
         "process": proc,
         "flow": _build_flow(symbols),
         "headlines": _headlines,
+        "content": _content,
     }
     os.makedirs("docs", exist_ok=True)
     with open("docs/data.json", "w", encoding="utf-8") as f:
